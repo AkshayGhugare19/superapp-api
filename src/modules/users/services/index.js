@@ -1,0 +1,10 @@
+module.exports.registerUser = require('./registerUser.service')
+module.exports.updateUser = require('./updateUser.service')
+module.exports.loginUser = require('./loginUser.service')
+module.exports.sendOTP = require('./sendOTP.service')
+module.exports.verifyOTP = require('./verifyOTP.service')
+module.exports.forgotPassword = require('./forgotPassword.service')
+module.exports.verifyResetToken = require('./verifyResetToken.service')
+module.exports.resetPassword = require('./resetPassword.service')
+module.exports.logout = require('./logout.service')
+

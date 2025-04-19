@@ -1,0 +1,11 @@
+module.exports.registerUser = require('./registerUser.controller')
+module.exports.loginUser = require('./loginUser.controller')
+module.exports.updateUser = require('./updateUser.controller')
+module.exports.sendOTP = require('./sendOTP.controller')
+module.exports.verifyOTP = require('./verifyOTP.controller')
+module.exports.forgotPassword = require('./forgotPassword.controller')
+module.exports.verifyResetToken = require('./verifyResetToken.controller')
+module.exports.resetPassword = require('./resetPassword.controller')
+module.exports.encryption = require('./encryption.controller')
+module.exports.logout = require('./logout.controller')
+
