@@ -15,7 +15,7 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
             }
 
             //on production
-            if (process.env.NODE_ENV === 'development') {
+            if (process.env.NODE_ENV === 'production') {
                 const phoneOtpRes = await sendOtpOnPhone(phone, countryCode);
                 if (phoneOtpRes?.success) {
                     return { status: true, code: 200, msg: 'OTP sent successfully to phone.' };
@@ -57,7 +57,7 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
                     </div>
                 `,
             });
-
+            
             if (emailOtpRes?.success) {
                 return { status: true, code: 200, msg: 'OTP sent successfully to email.' };
             } else {
