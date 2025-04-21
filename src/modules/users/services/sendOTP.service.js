@@ -1,3 +1,4 @@
+const { otpType } = require("../../../config/enums");
 const { db } = require("../../../db/db");
 const { sendOtpOnPhone } = require("../../../utilities/sendOTPOnPhone");
 const { sendOtpOnEmail } = require("../../../utilities/sendOtpOnEmail");
@@ -59,10 +60,31 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
             });
 
             if (emailOtpRes?.success) {
+                const existingOtp = await db.Otps.findOne({
+                    where: { email: email, otpFor: otpType.emailVerify }
+                });
+            console.log("ototot",otp)
+                if (existingOtp) {
+                    // Update the existing OTP
+                    await db.Otps.update(
+                        { otpCode: otp },
+                        { where: { email: email, otpFor: otpType.emailVerify } }
+                    );
+                } else {
+                    // Create a new OTP entry
+                    await db.Otps.create({
+                        email: email,
+                        otpCode: otp,
+                        otpFor: otpType.emailVerify,
+                        expiresAt:emailOtpRes?.expiresAt
+                    });
+                }
+            
                 return { status: true, code: 200, msg: 'OTP sent successfully to email.' };
             } else {
                 return { status: false, code: 400, msg: 'Something went wrong.' };
             }
+            
 
         } else {
             return { status: false, code: 400, msg: 'Invalid OTP type.' };

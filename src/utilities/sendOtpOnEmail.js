@@ -5,7 +5,8 @@ async function sendOtpOnEmail({
 	subject,
 	html,
 	attachments = [],
-	from = process.env.APP_MAIL
+	from = process.env.APP_MAIL,
+	expireInMinutes = 10 // Optional param for flexibility
 }) {
 	try {
 		// Validate environment variables
@@ -35,12 +36,15 @@ async function sendOtpOnEmail({
 			attachments
 		});
 
-		console.log(`✅ Email sent successfully to ${to}: ${info.messageId}`);
+		const expiresAt = new Date(Date.now() + expireInMinutes * 60000);
+
+		console.log(`✅ Email sent successfully to>>> ${to}:`,info);
 		return {
 			success: true,
 			message: `Email sent successfully to ${to}`,
 			messageId: info.messageId,
-			to
+			to,
+			expiresAt 
 		};
 
 	} catch (error) {

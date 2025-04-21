@@ -167,24 +167,61 @@ const sendOTP = {
 
 const verifyOTP = {
 	body: Joi.object({
-		phone: Joi.string().trim().pattern(/^\d{6,15}$/).required()
+		type: Joi.string().valid('phone', 'email').required()
 			.messages({
-				'string.required': `The 'phone' field is required`,
-				'string.empty': `The 'phone' field cannot be empty.`,
-				'string.pattern.base': `Please enter a valid phone number.`,
+				'any.required': `The 'type' field is required.`,
+				'any.only': `The 'type' must be either 'phone' or 'email'.`,
 			}),
-		countryCode: Joi.string().trim().min(1).max(5).optional()
-			.messages({
-				'string.empty': `The 'countryCode' field cannot be empty if provided.`,
-				'string.min': `The 'countryCode' is Invalid.`,
-				'string.max': `The 'countryCode' is Invalid.`,
-			}),
-		otp: Joi.string().trim().min(6).max(6).required(),
-		role: Joi.string().trim().valid('user', 'brand').required()
-			.messages({
-				'string.required': `The 'role' field is required.`,
-				'string.valid': `The 'role' must be either 'user' or 'brand'.`,
+
+		phone: Joi.alternatives().conditional('type', {
+			is: 'phone',
+			then: Joi.string().trim().pattern(/^\d{6,15}$/).required()
+				.messages({
+					'any.required': `The 'phone' field is required when type is 'phone'.`,
+					'string.empty': `The 'phone' field cannot be empty.`,
+					'string.pattern.base': `Please enter a valid phone number.`,
+				}),
+			otherwise: Joi.forbidden().messages({
+				'any.unknown': `The 'phone' field is not allowed when type is 'email'.`
 			})
+		}),
+
+		countryCode: Joi.alternatives().conditional('type', {
+			is: 'phone',
+			then: Joi.string().trim().min(1).max(5).optional()
+				.messages({
+					'string.empty': `The 'countryCode' cannot be empty.`,
+					'string.min': `The 'countryCode' is invalid.`,
+					'string.max': `The 'countryCode' is invalid.`,
+				}),
+			otherwise: Joi.forbidden().messages({
+				'any.unknown': `The 'countryCode' field is not allowed when type is 'email'.`
+			})
+		}),
+
+		email: Joi.alternatives().conditional('type', {
+			is: 'email',
+			then: Joi.string().trim().email().required()
+				.messages({
+					'any.required': `The 'email' field is required when type is 'email'.`,
+					'string.email': `Please enter a valid email address.`,
+				}),
+			otherwise: Joi.forbidden().messages({
+				'any.unknown': `The 'email' field is not allowed when type is 'phone'.`
+			})
+		}),
+
+		otp: Joi.string().trim().length(6).required()
+			.messages({
+				'any.required': `The 'otp' field is required.`,
+				'string.length': `The 'otp' must be exactly 6 digits.`,
+			}),
+
+		role: Joi.string().trim().valid('user', 'brand', 'consumer').required()
+			.messages({
+				'any.required': `The 'role' field is required.`,
+				'any.only': `The 'role' must be either 'user', 'brand', or 'consumer'.`,
+			}),
 	}),
 };
 

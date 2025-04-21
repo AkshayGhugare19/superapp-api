@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
     countryCode: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: '91'
+      defaultValue: null
     },
     email: {
       type: DataTypes.STRING,
