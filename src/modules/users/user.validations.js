@@ -46,8 +46,8 @@ const registerUser = {
 			otherwise: Joi.forbidden()
 		}),
 
-		password: Joi.string().trim().min(6).required().messages({
-			'string.min': `The 'password' must be at least 6 characters long.`,
+		password: Joi.string().trim().min(4).required().messages({
+			'string.min': `The 'password' must be at least 4 characters long.`,
 			'any.required': `The 'password' field is required.`,
 			'string.empty': `The 'password' field cannot be empty.`,
 		})
@@ -128,56 +128,66 @@ const loginUser = {
 
 const updateUser = {
 	body: Joi.object({
-		name: Joi.string().trim().min(1).max(255).optional().messages({
-			'string.empty': `The 'name' field cannot be empty.`,
-		}),
-		username: Joi.string().trim().min(1).max(255).optional().messages({
-			'string.empty': `The 'username' field cannot be empty.`,
-		}),
-		phone: Joi.number().integer().min(1000000000).max(999999999999).optional().messages({
-			'number.base': `The 'phone' field must be a valid number.`,
-			'number.min': `The 'phone' number seems too short.`,
-			'number.max': `The 'phone' number seems too long.`,
-		}),
-		countryCode: Joi.string().trim().optional(),
-		email: Joi.string().trim().email().optional().messages({
-			'string.email': `The 'email' field must be a valid email address.`,
-			'string.empty': `The 'email' field cannot be empty.`,
-		}),
-		password: Joi.string().optional().custom((value, helpers) => {
-			if (value && value.length < 42) {
-				return helpers.message('Password must be encrypted');
-			}
-			return value;
-		}),
-		profilePic: Joi.string().trim().uri().optional().messages({
-			'string.uri': `The 'profilePic' field must be a valid URL.`,
-		}),
-		role: Joi.string().valid(...Object.values(roles)).optional().messages({
-			'any.only': `The 'role' must be one of [${Object.values(roles).join(', ')}]`,
-		}),
-		dateOfBirth: Joi.date().iso().optional().messages({
-			'date.base': `The 'dateOfBirth' must be a valid date.`,
-		}),
-		gender: Joi.string().valid(...Object.values(gender)).optional().messages({
-			'any.only': `The 'gender' must be one of [${Object.values(gender).join(', ')}]`,
-		}),
-		location: Joi.string().trim().max(255).optional().messages({
-			'string.max': `The 'location' field must be less than 255 characters.`,
-		}),
-		language: Joi.string().trim().max(255).optional().messages({
-			'string.max': `The 'language' field must be less than 255 characters.`,
-		}),
-		isPrivate: Joi.boolean().optional(),
-		isProfileCompleted: Joi.boolean().optional(),
-		isAccountLocked: Joi.boolean().optional(),
-		accountLockingReason: Joi.string().trim().max(255).optional(),
-		isMobileVerified: Joi.boolean().optional(),
-		isEmailVerified: Joi.boolean().optional(),
-		loginAttempts: Joi.number().integer().optional(),
-		resetToken: Joi.string().optional(),
+	  name: Joi.string().trim().max(255).optional(),
+  
+	  username: Joi.string().trim().max(255).optional().messages({
+		'string.empty': `The 'username' field cannot be empty.`,
+	  }),
+  
+	  phone: Joi.number().integer().min(1000000000).max(999999999999).optional().messages({
+		'number.base': `The 'phone' field must be a valid number.`,
+		'number.min': `The 'phone' number seems too short.`,
+		'number.max': `The 'phone' number seems too long.`,
+	  }),
+  
+	  countryCode: Joi.string().trim().optional(),
+  
+	  email: Joi.string().trim().email().optional().messages({
+		'string.email': `The 'email' field must be a valid email address.`,
+		'string.empty': `The 'email' field cannot be empty.`,
+	  }),
+  
+	  password: Joi.string().optional().custom((value, helpers) => {
+		if (value && value.length < 42) {
+		  return helpers.message('Password must be encrypted (min 42 chars).');
+		}
+		return value;
+	  }),
+  
+	  profilePic: Joi.string().trim().uri().optional().messages({
+		'string.uri': `The 'profilePic' field must be a valid URL.`,
+	  }),
+  
+	  role: Joi.string().valid(...Object.values(roles)).optional().messages({
+		'any.only': `The 'role' must be one of [${Object.values(roles).join(', ')}].`,
+	  }),
+  
+	  dateOfBirth: Joi.date().iso().optional().messages({
+		'date.base': `The 'dateOfBirth' must be a valid ISO date.`,
+	  }),
+  
+	  gender: Joi.string().valid(gender).optional().messages({
+		'any.only': `The 'gender' must be one of [${gender}].`,
+	  }),
+  
+	  location: Joi.string().trim().max(255).optional().messages({
+		'string.max': `The 'location' field must be less than 255 characters.`,
+	  }),
+  
+	  language: Joi.string().trim().max(255).optional().messages({
+		'string.max': `The 'language' field must be less than 255 characters.`,
+	  }),
+  
+	  isPrivate: Joi.boolean().optional(),
+	  isProfileCompleted: Joi.boolean().optional(),
+	  isAccountLocked: Joi.boolean().optional(),
+	  accountLockingReason: Joi.string().trim().max(255).optional(),
+	  isMobileVerified: Joi.boolean().optional(),
+	  isEmailVerified: Joi.boolean().optional(),
+	  loginAttempts: Joi.number().integer().optional(),
+	  resetToken: Joi.string().optional(),
 	}),
-};
+  };
 
 const getbyId = {
 	params: Joi.object({
