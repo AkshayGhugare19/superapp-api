@@ -12,7 +12,13 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
 
             const userExists = await db.Users.scope('withPassword').findOne({ where: { phone, isActive: true } });
             if (userExists?.password) {
-                return { status: false, code: 400, msg: 'User is already registered.' };
+                const phoneOtpRes = await sendOtpOnPhone(phone, countryCode);
+                if (phoneOtpRes?.success) {
+                    return { status: true, code: 200, msg: 'OTP sent successfully to registred phone.' };
+                } else {
+                    return { status: false, code: 400, msg: 'Something went wrong.' };
+                }
+                // return { status: false, code: 400, msg: 'User is already registered.' };
             }
 
             //on production
@@ -63,7 +69,7 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
                 const existingOtp = await db.Otps.findOne({
                     where: { email: email, otpFor: otpType.emailVerify }
                 });
-            console.log("Email otp",otp)
+                console.log("Email otp", otp)
                 if (existingOtp) {
                     // Update the existing OTP
                     await db.Otps.update(
@@ -76,15 +82,15 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
                         email: email,
                         otpCode: otp,
                         otpFor: otpType.emailVerify,
-                        expiresAt:emailOtpRes?.expiresAt
+                        expiresAt: emailOtpRes?.expiresAt
                     });
                 }
-            
+
                 return { status: true, code: 200, msg: 'OTP sent successfully to email.' };
             } else {
                 return { status: false, code: 400, msg: 'Something went wrong.' };
             }
-            
+
 
         } else {
             return { status: false, code: 400, msg: 'Invalid OTP type.' };
