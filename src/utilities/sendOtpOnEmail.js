@@ -38,7 +38,7 @@ async function sendOtpOnEmail({
 
 		const expiresAt = new Date(Date.now() + expireInMinutes * 60000);
 
-		console.log(`✅ Email sent successfully to>>> ${to}:`,info);
+		console.log(`✅ Email sent successfully to ${to}:`,info);
 		return {
 			success: true,
 			message: `Email sent successfully to ${to}`,

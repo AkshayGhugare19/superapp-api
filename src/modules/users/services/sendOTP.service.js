@@ -63,7 +63,7 @@ const sendOTP = async ({ phone, countryCode, email, type }) => {
                 const existingOtp = await db.Otps.findOne({
                     where: { email: email, otpFor: otpType.emailVerify }
                 });
-            console.log("ototot",otp)
+            console.log("Email otp",otp)
                 if (existingOtp) {
                     // Update the existing OTP
                     await db.Otps.update(
