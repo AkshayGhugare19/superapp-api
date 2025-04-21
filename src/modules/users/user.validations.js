@@ -6,55 +6,123 @@ eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
 
 const registerUser = {
 	body: Joi.object({
-		phone: Joi.string().trim().pattern(/^\d{6,15}$/).messages({
-			'string.pattern.base': `The 'phone number' field must be a valid phone number with 6 to 15 digits including the country code.`,
-			'string.empty': `The 'phone number' field cannot be empty.`,
+		type: Joi.string().valid('phone', 'email').required().messages({
+			'any.only': "The 'type' must be either 'phone' or 'email'.",
+			'any.required': "The 'type' field is required."
 		}),
-		email: Joi.string().trim().email().messages({
-			'string.email': `The 'email' field must be a valid email address.`,
-			'string.empty': `The 'email' field cannot be empty.`,
-		}),
-		role: Joi.string().valid(...Object.values(userRoles)).default('user').required().messages({
+
+		role: Joi.string().valid(...Object.values(userRoles)).required().messages({
 			'any.only': `The 'role' field must be one of ${Object.values(userRoles).join(", ")}.`,
 			'any.required': `The 'role' field is required. Please include it in your request.`,
 		}),
-	}).or('phone', 'email').messages({
-		'object.missing': `At least one of 'phone' or 'email' must be provided.`,
-	}),
+
+		phone: Joi.when('type', {
+			is: 'phone',
+			then: Joi.string().trim().pattern(/^\d{6,15}$/).required().messages({
+				'string.pattern.base': `The 'phone' must be a valid phone number with 6 to 15 digits.`,
+				'any.required': `The 'phone' field is required when type is 'phone'.`,
+				'string.empty': `The 'phone' field cannot be empty.`,
+			}),
+			otherwise: Joi.forbidden()
+		}),
+
+		countryCode: Joi.when('type', {
+			is: 'phone',
+			then: Joi.string().trim().pattern(/^\d{1,4}$/).required().messages({
+				'string.pattern.base': `The 'countryCode' must be a valid numeric code (e.g., '91').`,
+				'any.required': `The 'countryCode' is required when type is 'phone'.`,
+				'string.empty': `The 'countryCode' field cannot be empty.`,
+			}),
+			otherwise: Joi.forbidden()
+		}),
+
+		email: Joi.when('type', {
+			is: 'email',
+			then: Joi.string().trim().email().required().messages({
+				'string.email': `The 'email' field must be a valid email address.`,
+				'any.required': `The 'email' field is required when type is 'email'.`,
+				'string.empty': `The 'email' field cannot be empty.`,
+			}),
+			otherwise: Joi.forbidden()
+		}),
+
+		password: Joi.string().trim().min(6).required().messages({
+			'string.min': `The 'password' must be at least 6 characters long.`,
+			'any.required': `The 'password' field is required.`,
+			'string.empty': `The 'password' field cannot be empty.`,
+		})
+
+	})
 };
 
 
 const loginUser = {
 	body: Joi.object({
-		email: Joi.string().trim().custom((value, helper) => {
-			const phoneRegex = /^\d{6,15}$/;
-			const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		type: Joi.string().valid('email', 'phone').required().messages({
+			'any.only': `The 'type' field must be either 'email' or 'phone'.`,
+			'any.required': `The 'type' field is required.`,
+		}),
 
-			if (emailRegex.test(value)) {
+		email: Joi.string().when('type', {
+			is: 'email',
+			then: Joi.string()
+				.trim()
+				.email({ tlds: { allow: false } })
+				.required()
+				.messages({
+					'string.email': 'Please provide a valid email address.',
+					'any.required': `The 'email' field is required when type is 'email'.`,
+				}),
+			otherwise: Joi.forbidden(),
+		}),
+
+		phone: Joi.string().when('type', {
+			is: 'phone',
+			then: Joi.string()
+				.trim()
+				.pattern(/^\d{6,15}$/)
+				.required()
+				.messages({
+					'string.pattern.base': 'Phone number must be between 6 to 15 digits.',
+					'any.required': `The 'phone' field is required when type is 'phone'.`,
+				}),
+			otherwise: Joi.forbidden(),
+		}),
+
+		countryCode: Joi.string().when('type', {
+			is: 'phone',
+			then: Joi.string()
+				.trim()
+				.pattern(/^\d{1,5}$/)
+				.required()
+				.messages({
+					'string.pattern.base': 'Country code must be 1 to 5 digits.',
+					'any.required': `The 'countryCode' field is required when type is 'phone'.`,
+				}),
+			otherwise: Joi.forbidden(),
+		}),
+
+		password: Joi.string()
+			.trim()
+			.required()
+			.custom((value, helpers) => {
+				if (value && value.length < 42) {
+					return helpers.message('Password must be encrypted');
+				}
 				return value;
-			}
+			})
+			.messages({
+				'any.required': `The 'password' field is required.`,
+				'string.empty': `The 'password' field cannot be empty.`,
+			}),
 
-			if (phoneRegex.test(value)) {
-				return value;
-			}
-
-			return helper.message('Email or phone number must be valid.');
-		}).required().messages({
-			'any.required': `The 'email' field is required. Please include it in your request.`,
-		}),
-		password: Joi.string().trim().required().custom((value, helpers) => {
-			if (value && value.length < 42) {
-				return helpers.message('Password must be encrypted');
-			}
-			return value;
-		}).messages({
-			'any.required': `The 'password' field is required. Please include it in your request.`,
-			'string.empty': `The 'password' field cannot be empty. Please provide a valid password.`,
-		}),
-		role: Joi.string().valid(...Object.values(userRoles)).default('user').required().messages({
-			'any.only': `The 'role' field must be one of ${Object.values(userRoles).join(", ")}.`,
-			'any.required': `The 'role' field is required. Please include it in your request.`,
-		}),
+		role: Joi.string()
+			.valid(...Object.values(userRoles))
+			.required()
+			.messages({
+				'any.only': `The 'role' must be one of ${Object.values(userRoles).join(", ")}.`,
+				'any.required': `The 'role' field is required.`,
+			}),
 	}),
 };
 

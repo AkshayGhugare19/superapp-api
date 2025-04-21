@@ -6,9 +6,9 @@ const statusCodeMap = require('../../../utilities/statusCodeMap');
 
 const loginUser = catchAsync(async (req, res) => {
 
-	const { email, password, role } = await pick(req?.body, ['email', 'password', 'role'])
+	const { email, phone, countryCode, password, role, type } = await pick(req?.body, ['email', 'phone', 'countryCode', 'password', 'role', 'type'])
 
-	const loginResult = await usersService.loginUser({ email, password, role })
+	const loginResult = await usersService.loginUser({ email, phone, countryCode, password, role, type })
 	if (loginResult?.status) {
 		sendResponse(res, statusCodeMap[loginResult?.code], loginResult?.data, null);
 	} else {

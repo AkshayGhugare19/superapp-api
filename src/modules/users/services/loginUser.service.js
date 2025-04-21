@@ -1,87 +1,92 @@
 const bcrypt = require('bcryptjs');
 const tokenServices = require("../../tokens/tokens.services");
-const otpServices = require("../../otps/services");
 const { db } = require('../../../db/db');
 const decryptPassword = require('../../../utilities/decryptPassword');
 const updaterUser = require('./updateUser.service');
 
-const loginUser = async ({ email, password, role }) => {
+const loginUser = async ({ email, phone, countryCode, password, role, type }) => {
 	try {
+		if (!type || !['email', 'phone'].includes(type)) {
+			return { status: false, code: 400, msg: "Login type must be either 'email' or 'phone'." };
+		}
 
-		const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
-		const isPhone = /^[0-9]{10,15}$/.test(email);
+		let userQuery = { role, isActive: true };
 
-		let userExists;
-		if (isEmail) {
-			// If it's an email, search by email
-			userExists = await db.Users.scope('withPassword').findAll({
-				where: {
-					email: email,
-					role: role,
-					isActive: true
-				},
-			});
-		} else if (isPhone) {
-			// If it's a phone number, search by phone number
-			userExists = await db.Users.scope('withPassword').findAll({
-				where: {
-					phone: email,  // here email represents phone number
-					role: role,
-					isActive: true
-				},
-			});
-		} else {
+		if (type === 'email') {
+			if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+				return { status: false, code: 400, msg: "Please provide a valid email address." };
+			}
+			userQuery.email = email;
+		} else if (type === 'phone') {
+			if (!phone || !/^\d{6,15}$/.test(phone)) {
+				return { status: false, code: 400, msg: "Please provide a valid phone number (6–15 digits)." };
+			}
+			if (!countryCode || !/^\d{1,5}$/.test(countryCode)) {
+				return { status: false, code: 400, msg: "Please provide a valid country code." };
+			}
+			userQuery.phone = phone;
+			userQuery.countryCode = countryCode;
+		}
+
+		const users = await db.Users.scope('withPassword').findAll({ where: userQuery });
+
+		if (users.length === 0) {
 			return {
-				status: false, code: 400,
-				msg: "Please provide a valid email or phone number."
+				status: false,
+				code: 404,
+				msg: `${capitalize(role)} with given ${type} not found.`
 			};
 		}
 
-		if (userExists?.length > 1) {
-			return { status: false, code: 400, msg: "We found multiple records for details provided." };
+		if (users.length > 1) {
+			return {
+				status: false,
+				code: 400,
+				msg: `Multiple users found for this ${type}. Please contact support.`
+			};
 		}
 
-		let user = userExists[0];
-		if (!user) {
+		const user = users[0];
+
+		if (user.isAccountLocked) {
 			return {
-				msg: `${capitalize(role)} with ${isEmail ? 'email' : 'phone'} ${email} not found`,
 				status: false,
-				code: 404
+				code: 403,
+				msg: "Your account is locked. Please contact support."
 			};
 		}
 
 		const originalPassword = await decryptPassword(password);
-		
-		// Validate password
-		let matchPassword = await bcrypt.compare(originalPassword, user?.password);
-		if (!matchPassword) {
-			return { status: false, code: 400, msg: "Password do not match" };
-		}
+		const isMatch = await bcrypt.compare(originalPassword, user.password);
 
-		if (user?.isAccountLocked) {
-			return { status: false, code: 400, msg: "Your account is locked." };
+		if (!isMatch) {
+			return { status: false, code: 401, msg: "Incorrect password." };
 		}
 
 		const tokens = await tokenServices.generateAuthTokens(user);
-		delete user?.dataValues?.password;
-		if(tokens){
-			const payload = {
-				loggedInUser:true
-			}
-			updaterUser(user?.dataValues?.id,payload)
+		delete user.dataValues.password;
+
+		if (tokens) {
+			await updaterUser(user.id, { loggedInUser: true });
 		}
 
-		return { data: { user, tokens }, status: true, code: 200 };
+		return {
+			status: true,
+			code: 200,
+			data: {
+				user,
+				tokens
+			}
+		};
 
-	} catch (error) {
-		console.error("Error while login User:", error);
-		return { msg: error.message, status: false, code: 500 };
+	} catch (err) {
+		console.error("Login error:", err);
+		return { status: false, code: 500, msg: "Internal server error." };
 	}
 };
 
-function capitalize(string) {
-    if (!string) return string;
-    return string.charAt(0).toUpperCase() + string.slice(1);
+function capitalize(str) {
+	return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 }
 
 module.exports = loginUser;

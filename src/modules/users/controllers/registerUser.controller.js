@@ -5,9 +5,9 @@ const pick = require('../../../utilities/pick');
 const statusCodeMap = require('../../../utilities/statusCodeMap');
 
 const registerUser = catchAsync(async (req, res) => {
-	const { role, phone, email } = await pick(req?.body, ['role', 'phone', 'email']);
+	const { role, phone, email, type, countryCode, password } = await pick(req?.body, ['role', 'phone', 'email', 'type', 'countryCode', 'password']);
 
-	const addResult = await usersService.registerUser({ role, phone, email });
+	const addResult = await usersService.registerUser({role, phone, email, type, countryCode, password });
 
 	if (addResult?.status) {
 		sendResponse(res, statusCodeMap[addResult?.code], addResult?.data, null);
