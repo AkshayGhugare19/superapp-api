@@ -133,8 +133,13 @@ app.use(passport.session());
 passport.use('jwt', jwtStrategy);
 
 app.all('/', (req, res) => {
-	res.send("Hello from APIs")
+	res.send("Hello from APIs Super app")
 });
+
+app.all('/api/hello', (req, res) => {
+	res.send("Hello hsjss")
+});
+
 
 
 // Setup Socket Connectionns

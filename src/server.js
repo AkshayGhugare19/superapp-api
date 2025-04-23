@@ -22,9 +22,13 @@ const startServer = () => {
     const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : process.env.PORT;
 
     // Start the server after successful DB connection
-    const server = app.listen(port, () => {
-        logger.info(`Listening on port ${port}`);
-    });
+    // const server = app.listen(port, () => {
+    //     logger.info(`Listening on port ${port}`);
+    // });
+
+    const server =  app.listen(3001, '0.0.0.0', () => {
+        console.log("Server running on port vv 3001");
+      });
 
     // Graceful shutdown handlers
     const exitHandler = () => {
