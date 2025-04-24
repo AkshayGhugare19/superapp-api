@@ -295,10 +295,12 @@ const verifyOTP = {
 				'string.length': `The 'otp' must be exactly 6 digits.`,
 			}),
 
-		role: Joi.string().trim().valid('user', 'brand', 'consumer').required()
+			role: Joi.string()
+			.valid(...Object.values(userRoles))
+			.required()
 			.messages({
+				'any.only': `The 'role' must be one of ${Object.values(userRoles).join(", ")}.`,
 				'any.required': `The 'role' field is required.`,
-				'any.only': `The 'role' must be either 'user', 'brand', or 'consumer'.`,
 			}),
 	}),
 };
