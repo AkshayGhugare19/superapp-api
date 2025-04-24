@@ -6,8 +6,8 @@ const sendOtpToEmail = async (email) => {
 	try {
 		if (!email) return { status: false, code: 400, msg: 'Email is required.' };
 
-		const user = await db.Users.scope('withPassword').findOne({ where: { email, isActive: true } });
-		if (user?.password) return { status: false, code: 400, msg: 'User is already registered.' };
+		// const user = await db.Users.scope('withPassword').findOne({ where: { email, isActive: true } });
+		// if (user?.password) return { status: false, code: 400, msg: 'User is already registered.' };
 
 		const otp = Math.floor(100000 + Math.random() * 900000);
 		const emailOtpRes = await sendOtpOnEmail({
