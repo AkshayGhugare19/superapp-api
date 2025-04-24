@@ -7,11 +7,11 @@ const sendOtpToPhone = async ({ phone, countryCode }) => {
 			return { status: false, code: 400, msg: 'Phone and country code are required.' };
 		}
 
-		const user = await db.Users.scope('withPassword').findOne({ where: { phone, isActive: true } });
+		// const user = await db.Users.scope('withPassword').findOne({ where: { phone, isActive: true } });
 
-		if (user?.password) {
-			return { status: false, code: 400, msg: 'User is already registered.' };
-		}
+		// if (user?.password) {
+		// 	return { status: false, code: 400, msg: 'User is already registered.' };
+		// }
 
 		if (process.env.NODE_ENV === 'development') {
 			const res = await sendOtpOnPhone(phone, countryCode);
