@@ -1,7 +1,6 @@
 module.exports.registerUser = require('./registerUser.controller')
 module.exports.loginUser = require('./loginUser.controller')
 module.exports.updateUser = require('./updateUser.controller')
-module.exports.sendOTP = require('./sendOTP.controller')
 module.exports.sendOTPPhone = require('./sendOTPPhone.controller')
 module.exports.sendOTPEmail = require('./sendOTPEmail.controller')
 module.exports.verifyOTP = require('./verifyOTP.controller')

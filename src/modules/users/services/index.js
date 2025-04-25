@@ -1,7 +1,6 @@
 module.exports.registerUser = require('./registerUser.service')
 module.exports.updateUser = require('./updateUser.service')
 module.exports.loginUser = require('./loginUser.service')
-module.exports.sendOTP = require('./sendOTP.service')
 module.exports.sendOTPPhone = require('./sendOTPPhone.service')
 module.exports.sendOTPEmail = require('./sendOTPEmail.service')
 module.exports.verifyOTP = require('./verifyOTP.service')
