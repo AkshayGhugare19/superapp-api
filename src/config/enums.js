@@ -85,6 +85,20 @@ const messageStatus = {
 };
 
 
+const messageTypes = {
+	Text: 'text',
+	Image: 'image',
+	Document: 'document',
+	Video: 'video'
+  };
+
+const chatType = {
+	OneToOne: 'one-to-one',
+	Group: 'Group'
+  };
+  
+
+
 module.exports = {
 	roles,
 	userRoles,
@@ -94,7 +108,9 @@ module.exports = {
 	accountType,
 	gender,
 	socketType,
-	messageStatus
+	messageStatus,
+	messageTypes,
+	chatType
 };
 
 

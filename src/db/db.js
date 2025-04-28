@@ -50,6 +50,8 @@ const db = {
 	Otps: require('../modules/otps/otp.model')(sequelize),
 	Message: require('../modules/chats/message.model')(sequelize),
 	Conversation: require('../modules/chats/conversation.model')(sequelize),
+	GroupMember: require('../modules/chats/groupMember.model')(sequelize),
+	Group: require('../modules/chats/groups.model')(sequelize)
 
 };
 
@@ -106,6 +108,16 @@ db.Users.hasMany(db.Conversation, {
 	foreignKey: 'participant2Id',
 	targetKey: 'id'
 });
+
+db.Group.belongsTo(db.Conversation, {
+    foreignKey: 'conversationId', // Foreign key in Group table linking to Conversation table
+    as: 'conversation',
+  });
+
+  db.GroupMember.belongsTo(db.Group, {
+    foreignKey: 'groupId',
+    as: 'group',
+  });
 
 db.Sequelize = Sequelize;
 

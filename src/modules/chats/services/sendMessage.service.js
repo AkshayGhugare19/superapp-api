@@ -1,13 +1,14 @@
 const { db } = require('../../../db/db');
 
-const sendMessage = async ({ senderId, receiverId, message, conversationId }) => {
+const sendMessage = async ({ senderId, receiverId, message, conversationId, type='text' }) => {
     try {
         console.log('Debug :: senderId, receiverId, message, conversationId', { senderId, receiverId, message, conversationId });
         const newMessage = await db.Message.create({
             senderId,
             receiverId,
             message,
-            conversationId
+            conversationId,
+            messageType: type
         });
 
         return { status: true, data: newMessage, code: 200 };

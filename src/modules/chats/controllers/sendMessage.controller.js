@@ -7,9 +7,9 @@ const statusCodeMap = require('../../../utilities/statusCodeMap');
 const sendMessage = catchAsync(async (req, res) => {
 
     const senderId = req.user.id
-    const { receiverId, message, conversationId } = await pick(req?.body, ['receiverId', 'message', 'conversationId']);
+    const { receiverId, message, conversationId, type } = await pick(req?.body, ['receiverId', 'message', 'conversationId', 'type']);
 
-    const response = await chatService.sendMessage({ senderId, receiverId, message, conversationId });
+    const response = await chatService.sendMessage({ senderId, receiverId, message, conversationId, type });
 
     if (response?.status) {
         sendResponse(res, statusCodeMap[response?.code], response?.data, null);

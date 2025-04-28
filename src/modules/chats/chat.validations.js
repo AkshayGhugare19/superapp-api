@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { followStatus } = require('../../config/enums');
+const { followStatus, messageTypes } = require('../../config/enums');
 
 
 
@@ -17,8 +17,19 @@ const messageValidation = {
       'string.empty': `The 'receiverId' field is required and cannot be empty. Please provide a valid receiverId`,
       'any.required': `The 'receiverId' field is required. Please include it in your request.`,
     }),
+    messageType: Joi.string().valid(...Object.values(messageTypes)).optional().messages({
+      'string.empty': `The 'messageType' field cannot be empty if provided. Please provide a valid messageType`,
+      'any.only': `The 'messageType' must be one of the following: ${Object.values(messageTypes).join(', ')}`,
+    })
   })
 }
+const createConversationSchema = {
+  body: Joi.object({
+    chatType: Joi.string().valid('one-to-one', 'group').required(),
+    participants: Joi.array().items(Joi.string().uuid()).min(2).required(),  // Ensuring we have 2 partic
+  })
+}
+
 
 const conversationValidation = {
   body: Joi.object({
@@ -48,5 +59,6 @@ const getMessageValidation = {
 module.exports = {
   messageValidation,
   conversationValidation,
-  getMessageValidation
+  getMessageValidation,
+  createConversationSchema  
 };
