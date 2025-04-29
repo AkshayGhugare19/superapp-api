@@ -50,7 +50,6 @@ const db = {
 	Otps: require('../modules/otps/otp.model')(sequelize),
 	Message: require('../modules/chats/message.model')(sequelize),
 	Conversation: require('../modules/chats/conversation.model')(sequelize),
-	GroupMember: require('../modules/chats/groupMember.model')(sequelize),
 	Group: require('../modules/chats/groups.model')(sequelize)
 
 };
@@ -114,10 +113,7 @@ db.Group.belongsTo(db.Conversation, {
     as: 'conversation',
   });
 
-  db.GroupMember.belongsTo(db.Group, {
-    foreignKey: 'groupId',
-    as: 'group',
-  });
+
 
 db.Sequelize = Sequelize;
 
