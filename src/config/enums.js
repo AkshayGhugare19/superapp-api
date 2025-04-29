@@ -96,8 +96,12 @@ const chatType = {
 	OneToOne: 'one-to-one',
 	Group: 'Group'
   };
-  
 
+  const participantRole = {
+	ADMIN: 'admin',
+	USER: 'user',
+	VIEWER: 'viewer',
+  };
 
 module.exports = {
 	roles,
@@ -110,7 +114,8 @@ module.exports = {
 	socketType,
 	messageStatus,
 	messageTypes,
-	chatType
+	chatType,
+	participantRole
 };
 
 

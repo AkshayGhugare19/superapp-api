@@ -6,7 +6,7 @@ const getUsers = async ({ userId, tenderId }) => {
     try {
 
         // Step 1: Fetch all conversations where the logged-in user is involved,
-        // and include participant user details (for both participant1 and participant2)
+        // and include participant user details (for both participant1 and participant2
         const whereStatement = {
             [Op.or]: [
                 { participant1Id: userId },

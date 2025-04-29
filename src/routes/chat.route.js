@@ -10,8 +10,9 @@ router.route('/sendMessages').post(auth([roles.consumer, roles.merchant,roles.ag
 router.route('/getMessages').get(auth([roles.consumer, roles.merchant,roles.agent]), validate(chatValidations?.getMessageValidation), chatControllers.getMessages);
 // router.route('/getMessages/:conversationId').post(chatControllers.getMessages);
 
-router.route('/conversation').post(auth([roles.consumer, roles.merchant,roles.agent]), validate(chatValidations?.conversationValidation), chatControllers.createConversation);
+router.route('/create/conversation').post(auth([roles.consumer, roles.merchant,roles.agent]), validate(chatValidations?.oneToOneChatValidation), chatControllers.createConversation);
 router.route('/getUsers').get(auth([roles.consumer, roles.merchant,roles.agent]), chatControllers.getUsers);
+router.route('/create/group').post(auth([roles.consumer, roles.merchant,roles.agent]), validate(chatValidations?.createGroupSchema), chatControllers.createGroup);
 
 
 

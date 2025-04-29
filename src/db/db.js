@@ -50,8 +50,8 @@ const db = {
 	Otps: require('../modules/otps/otp.model')(sequelize),
 	Message: require('../modules/chats/message.model')(sequelize),
 	Conversation: require('../modules/chats/conversation.model')(sequelize),
-	Group: require('../modules/chats/groups.model')(sequelize)
-
+	Group: require('../modules/chats/groups.model')(sequelize),
+	ConversationParticipant: require('../modules/chats/conversationParticipants.modal')(sequelize)
 };
 
 // Tables associations
@@ -84,29 +84,29 @@ db.Users.hasMany(db.Message, {
 	as: 'SentMessages',
 });
 
-db.Conversation.belongsTo(db.Users, {
-	as: 'participant1',
-	foreignKey: 'participant1Id',
-	targetKey: 'id'
-});
+// db.Conversation.belongsTo(db.Users, {
+// 	as: 'participant1',
+// 	foreignKey: 'participant1Id',
+// 	targetKey: 'id'
+// });
 
-db.Conversation.belongsTo(db.Users, {
-	as: 'participant2',
-	foreignKey: 'participant2Id',
-	targetKey: 'id'
-});
+// db.Conversation.belongsTo(db.Users, {
+// 	as: 'participant2',
+// 	foreignKey: 'participant2Id',
+// 	targetKey: 'id'
+// });
 
-db.Users.hasMany(db.Conversation, {
-	as: 'participant1',
-	foreignKey: 'participant1Id',
-	targetKey: 'id'
-});
+// db.Users.hasMany(db.Conversation, {
+// 	as: 'participant1',
+// 	foreignKey: 'participant1Id',
+// 	targetKey: 'id'
+// });
 
-db.Users.hasMany(db.Conversation, {
-	as: 'participant2',
-	foreignKey: 'participant2Id',
-	targetKey: 'id'
-});
+// db.Users.hasMany(db.Conversation, {
+// 	as: 'participant2',
+// 	foreignKey: 'participant2Id',
+// 	targetKey: 'id'
+// });
 
 db.Group.belongsTo(db.Conversation, {
     foreignKey: 'conversationId', // Foreign key in Group table linking to Conversation table

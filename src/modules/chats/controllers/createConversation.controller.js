@@ -7,8 +7,8 @@ const statusCodeMap = require('../../../utilities/statusCodeMap');
 const createConversation = catchAsync(async (req, res) => {
 
     const user = req.user
-    const { chatType, participants } = pick(req.body, ['chatType', 'participants']);
-    const response = await chatService.createConversation({ chatType, participants, user});
+    const {  participantIds } = pick(req.body, ['participantIds']);
+    const response = await chatService.createConversation({ participantIds , initiatorId : user.id, groupName: null});
 
     if (response?.status) {
         sendResponse(res, statusCodeMap[response?.code], response?.data, null);
