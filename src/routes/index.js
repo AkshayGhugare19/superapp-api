@@ -4,6 +4,9 @@ const path = require('path');
 const router = express.Router();
 const userRoutes = require("./user.route")
 const otpRoutes = require("./otp.route")
+const chatRoutes = require("./chat.route")
+const kycRoutes = require("./kyc.route")
+
 const conversationRoutes = require("./conversation.route")
 const groupRoutes = require("./group.route")
 const messageRoutes = require("./message.route")
@@ -49,6 +52,10 @@ const defaultRoutes = [
 	// 	path: '/participant',
 	// 	route: participantsRoutes,
 	// },
+  {
+    path: "/kyc",
+    route: kycRoutes,
+  },
 	
 ];
 

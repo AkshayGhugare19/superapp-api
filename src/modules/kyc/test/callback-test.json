@@ -1,0 +1,22 @@
+{
+  "SmileJobID": "test-job-123",
+  "ResultCode": "0810",
+  "ResultText": "Document Verified",
+  "IsFinalResult": true,
+  "Actions": {
+    "Liveness_Check": "passed",
+    "Register_Selfie": "passed",
+    "Verify_Document": "passed",
+    "Human_Review_Compare": "passed",
+    "Return_Personal_Info": "passed",
+    "Selfie_To_ID_Card_Compare": "passed",
+    "Human_Review_Liveness_Check": "passed"
+  },
+  "PartnerParams": {
+    "job_id": "test-job-123",
+    "user_id": "test-user-456",
+    "job_type": "6"
+  },
+  "signature": "test-signature-789",
+  "timestamp": "2024-03-20T10:00:00Z"
+} 
