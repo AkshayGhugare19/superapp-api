@@ -1,8 +1,8 @@
-const catchAsync = require('../../../utilities/catchAsync');
-const sendResponse = require('../../../utilities/responseHandler');
-const chatService = require("../services");
-const pick = require('../../../utilities/pick');
-const statusCodeMap = require('../../../utilities/statusCodeMap');
+const catchAsync = require('../../../../utilities/catchAsync');
+const sendResponse = require('../../../../utilities/responseHandler');
+const chatService = require("../../services");
+const pick = require('../../../../utilities/pick');
+const statusCodeMap = require('../../../../utilities/statusCodeMap');
 
 const getMessages = catchAsync(async (req, res) => {
 

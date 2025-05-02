@@ -89,8 +89,16 @@ const messageTypes = {
 	Text: 'text',
 	Image: 'image',
 	Document: 'document',
-	Video: 'video'
+	Video: 'video',
   };
+  
+
+  const mediaTypes = {
+	Image: 'image',
+	Audio: 'audio',
+	Video: 'video',
+  };
+  
 
 const chatType = {
 	OneToOne: 'one-to-one',
@@ -115,7 +123,8 @@ module.exports = {
 	messageStatus,
 	messageTypes,
 	chatType,
-	participantRole
+	participantRole,
+	mediaTypes
 };
 
 

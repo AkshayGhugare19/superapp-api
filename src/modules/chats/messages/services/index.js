@@ -1,0 +1,1 @@
+module.exports.getMessages = require('./getMessages.service')

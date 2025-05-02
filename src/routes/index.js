@@ -4,7 +4,10 @@ const path = require('path');
 const router = express.Router();
 const userRoutes = require("./user.route")
 const otpRoutes = require("./otp.route")
-const chatRoutes = require("./chat.route")
+const conversationRoutes = require("./conversation.route")
+const groupRoutes = require("./group.route")
+const messageRoutes = require("./message.route")
+const participantsRoutes = require("./participants.route")
 
 const { uploadFile } = require('../utilities/fileUpload');
 
@@ -31,9 +34,21 @@ const defaultRoutes = [
 		route: otpRoutes,
 	},
 	{
-		path: '/chat',
-		route: chatRoutes,
+		path: '/conversation',
+		route: conversationRoutes,
 	},
+	{
+		path: '/group',
+		route: groupRoutes,
+	},
+	{
+		path: '/message',
+		route: messageRoutes,
+	},
+	// {
+	// 	path: '/participant',
+	// 	route: participantsRoutes,
+	// },
 	
 ];
 

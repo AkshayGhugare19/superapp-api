@@ -48,10 +48,10 @@ const db = {
 	Tokens: require('../modules/tokens/token.model')(sequelize),
 	Users: require('../modules/users/user.model')(sequelize),
 	Otps: require('../modules/otps/otp.model')(sequelize),
-	Message: require('../modules/chats/message.model')(sequelize),
-	Conversation: require('../modules/chats/conversation.model')(sequelize),
-	Group: require('../modules/chats/groups.model')(sequelize),
-	ConversationParticipant: require('../modules/chats/conversationParticipants.modal')(sequelize)
+	Message: require('../modules/chats/messages/message.model')(sequelize),
+	Conversation: require('../modules/chats/conversations/conversation.model')(sequelize),
+	Group: require('../modules/chats/groups/groups.model')(sequelize),
+	ConversationParticipant: require('../modules/chats/conversationParticipants/conversationParticipants.modal')(sequelize)
 };
 
 // Tables associations

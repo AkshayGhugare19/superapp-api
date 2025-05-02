@@ -3,8 +3,8 @@
 
 const { v4: uuidv4 } = require('uuid');
 const { Op, Sequelize } = require('sequelize');
-const { db, sequelize } = require('../../../db/db');
-const { chatType } = require('../../../config/enums');
+const { db, sequelize } = require('../../../../db/db');
+const { chatType } = require('../../../../config/enums');
 
 async function createConversation({ participantIds, initiatorId, groupName, transaction: passedTransaction }) {
 

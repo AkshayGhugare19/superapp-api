@@ -1,6 +1,6 @@
 const { object } = require('joi');
 const { DataTypes } = require('sequelize');
-const { chatType } = require('../../config/enums');
+const { chatType } = require('../../../config/enums');
 
 module.exports = (sequelize) => {
   const Conversation = sequelize.define('Conversation', {

@@ -1,6 +1,6 @@
 // models/conversationParticipants.js
 const { DataTypes } = require('sequelize');
-const { participantRole } = require('../../config/enums');
+const { participantRole } = require('../../../config/enums');
 
 module.exports = (sequelize) => {
   const ConversationParticipants = sequelize.define('ConversationParticipant', {

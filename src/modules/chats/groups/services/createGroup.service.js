@@ -2,7 +2,7 @@
 
 const { v4: uuidv4 } = require('uuid');
 const { db, sequelize } = require('../../../db/db');
-const createConversation = require('./createConversation.service');
+const createConversation = require('../../conversations/services/createConversation.service');
 
 const createGroup = async ({ groupName, groupDescription, groupImage, adminId, participantIds }) => {
 

@@ -1,7 +1,7 @@
-const catchAsync = require('../../../utilities/catchAsync');
-const sendResponse = require('../../../utilities/responseHandler');
-const chatService = require('../services');
-const statusCodeMap = require('../../../utilities/statusCodeMap');
+const catchAsync = require('../../../../utilities/catchAsync');
+const sendResponse = require('../../../../utilities/responseHandler');
+const chatService = require('../../services');
+const statusCodeMap = require('../../../../utilities/statusCodeMap');
 
 const createGroup = catchAsync(async (req, res) => {
   const adminId = req.user.id;

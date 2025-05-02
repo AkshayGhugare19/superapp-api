@@ -122,9 +122,9 @@ const createGroupSchema = {
 
 module.exports = {
   messageValidation,
-  conversationValidation,
   getMessageValidation,
   createConversationSchema  ,
+  conversationValidation,
+  oneToOneChatValidation,
   createGroupSchema,
-  oneToOneChatValidation
 };
