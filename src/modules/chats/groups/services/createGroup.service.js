@@ -24,13 +24,13 @@ const createGroup = async ({ groupName, groupDescription, groupImage, adminId, p
       };
     }
 
-    // Step 1: Create Group
+    // Step 1: Creat,e Group
     const newGroup = await db.Group.create({
       id: uuidv4(),
       groupName,
       groupDescription,
+      createdBy: adminId,
       groupImage,
-      adminId,
     }, { transaction: t });
 
     // Step 2: Create Conversation (ensure conversation.service supports external transactions)

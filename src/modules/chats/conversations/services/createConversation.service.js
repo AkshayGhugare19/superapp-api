@@ -96,6 +96,7 @@ async function createConversation({ participantIds, initiatorId, groupName, tran
       id: uuidv4(),
       conversationId: newConversation.id,
       userId,
+      AddedBy: initiatorId,
       role: initiatorId === userId ? 'admin' : 'user',
       joinedAt: new Date(),
     }));

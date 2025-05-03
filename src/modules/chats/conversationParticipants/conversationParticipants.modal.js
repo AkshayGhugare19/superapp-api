@@ -40,6 +40,10 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    AddedBy: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
   }, {
     timestamps: true,  // Automatically add createdAt and updatedAt fields
     paranoid: true,    // Soft delete support (deletedAt field)
