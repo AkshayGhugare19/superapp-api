@@ -22,6 +22,30 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID, // The user who initiated the chat
       allowNull: false,
     }, 
+    groupId: {
+      type: DataTypes.UUID, // Optional: The group ID for group chats
+      allowNull: true,      // Can be null for one-to-one chats
+      references: {
+        model: 'Groups',    // Assuming the Group model is named 'Group'
+        key: 'id',          // The foreign key reference to the Group table
+      },
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true, // to soft-disable conversations
+    },
+    lastMessageAt: {
+      type: DataTypes.DATE,
+      allowNull: true, // to track the last message's timestamp
+    },
+    lastMessage: {
+      type: DataTypes.STRING,  // Store the last message content
+      allowNull: true,         // Optional field to hold the message text or media link
+    },
+    deletedBy: {
+      type: DataTypes.UUID,
+      allowNull: true, // for tracking who deleted the conversation (if paranoid delete is used)
+    },
   },
     {
       timestamps: true,

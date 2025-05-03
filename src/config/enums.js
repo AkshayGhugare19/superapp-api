@@ -99,6 +99,11 @@ const messageTypes = {
 	Video: 'video',
   };
   
+  const groupType = {
+	Private: 'Private',
+	Public: 'public'
+  };
+  
 
 const chatType = {
 	OneToOne: 'one-to-one',
@@ -124,7 +129,8 @@ module.exports = {
 	messageTypes,
 	chatType,
 	participantRole,
-	mediaTypes
+	mediaTypes,
+	groupType
 };
 
 

@@ -4,7 +4,6 @@ const path = require('path');
 const router = express.Router();
 const userRoutes = require("./user.route")
 const otpRoutes = require("./otp.route")
-const chatRoutes = require("./chat.route")
 const kycRoutes = require("./kyc.route")
 
 const conversationRoutes = require("./conversation.route")

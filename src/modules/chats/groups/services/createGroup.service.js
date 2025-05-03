@@ -1,7 +1,7 @@
 // services/group.service.js
 
 const { v4: uuidv4 } = require('uuid');
-const { db, sequelize } = require('../../../db/db');
+const { db, sequelize } = require('../../../../db/db');
 const createConversation = require('../../conversations/services/createConversation.service');
 
 const createGroup = async ({ groupName, groupDescription, groupImage, adminId, participantIds }) => {
@@ -38,7 +38,8 @@ const createGroup = async ({ groupName, groupDescription, groupImage, adminId, p
       participantIds: uniqueParticipantIds,
       initiatorId: adminId,
       groupName,
-      transaction: t  // ✅ Pass the transaction if supported in conversation.service
+      transaction: t,  // ✅ Pass the transaction if supported in conversation.service
+      groupId: newGroup.id,
     });
 
     console.log(conversation, "conversation124")

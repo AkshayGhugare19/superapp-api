@@ -6,7 +6,7 @@ const { Op, Sequelize } = require('sequelize');
 const { db, sequelize } = require('../../../../db/db');
 const { chatType } = require('../../../../config/enums');
 
-async function createConversation({ participantIds, initiatorId, groupName, transaction: passedTransaction }) {
+async function createConversation({ participantIds, initiatorId, groupName, transaction: passedTransaction, groupId }) {
 
   participantIds = [...new Set(participantIds)];
 
@@ -88,7 +88,7 @@ async function createConversation({ participantIds, initiatorId, groupName, tran
       chatType: isGroup ? chatType.Group : chatType.OneToOne,
       participants: participantIds,
       initiatorId,
-      ...(isGroup && groupName ? { name: groupName } : {}),
+      ...(isGroup && groupName ? { name: groupName, groupId: groupId } : {}),
     }, { transaction: t });
 
     // ✅ 3. Create conversation participants

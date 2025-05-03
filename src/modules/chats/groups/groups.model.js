@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const { groupType } = require('../../../config/enums');
 
 module.exports = (sequelize) => {
   const Group = sequelize.define('Group', {
@@ -19,9 +20,27 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,  // For storing a URL to the group image (optional)
       allowNull: true,
     },
-    adminId: {
-      type: DataTypes.UUID,  // ID of the user who is an admin
+
+    groupType: {
+      type: DataTypes.ENUM(...Object.values(groupType)),
+      defaultValue: groupType.Private,
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    lastMessageAt: {
+      type: DataTypes.DATE,
       allowNull: true,
+    },
+    createdBy: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Users', // assuming your users table is named Users
+        key: 'id',
+      },
+      onDelete: 'SET NULL',
     },
   },
   {

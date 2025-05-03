@@ -1,7 +1,7 @@
 const catchAsync = require('../../../../utilities/catchAsync');
 const sendResponse = require('../../../../utilities/responseHandler');
-const chatService = require('../../services');
 const statusCodeMap = require('../../../../utilities/statusCodeMap');
+const groupService = require('../services');
 
 const createGroup = catchAsync(async (req, res) => {
   const adminId = req.user.id;
@@ -12,7 +12,7 @@ const createGroup = catchAsync(async (req, res) => {
     participantIds, // should be an array
   } = req.body;
 
-  const response = await chatService.createGroup({
+  const response = await groupService.createGroup({
     adminId,
     groupName,
     groupDescription,
