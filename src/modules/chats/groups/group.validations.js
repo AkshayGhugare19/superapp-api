@@ -48,7 +48,25 @@ const createGroupSchema = {
 })
 };
 
+const addMembersSchema = {
+  body: Joi.object({
+    participantIds: Joi.array()
+      .items(Joi.string().uuid().required().messages({
+        'string.uuid': 'Each participant ID must be a valid UUID.',
+      }))
+      .min(1)
+      .unique()
+      .required()
+      .messages({
+        'array.base': 'Participant list must be an array.',
+        'array.min': 'At least one participant is required.',
+        'array.unique': 'Participant IDs must not contain duplicates.',
+        'any.required': 'Participant list is required.',
+      }),
+  })
+};
 
 module.exports = {
   createGroupSchema,
+  addMembersSchema,
 };

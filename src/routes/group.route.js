@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.route('/create').post(auth([roles.consumer, roles.merchant,roles.agent]), validate(groupValidations.createGroupSchema), groupControllers.createGroup);
 router.route('/delete/:id').delete(auth([roles.consumer, roles.merchant,roles.agent]),  groupControllers.deleteGroup);
+router.route('/:id/members').post(auth([roles.consumer, roles.merchant,roles.agent]), validate(groupValidations.addMembersSchema), groupControllers.addGroupMembers);
 
 
 

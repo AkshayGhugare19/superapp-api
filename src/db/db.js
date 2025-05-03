@@ -51,7 +51,7 @@ const db = {
 	Message: require('../modules/chats/messages/message.model')(sequelize),
 	Conversation: require('../modules/chats/conversations/conversation.model')(sequelize),
 	Group: require('../modules/chats/groups/groups.model')(sequelize),
-	ConversationParticipant: require('../modules/chats/conversationParticipants/conversationParticipants.modal')(sequelize),
+	ConversationParticipants: require('../modules/chats/conversationParticipants/conversationParticipants.modal')(sequelize),
 	Kyc: require('../modules/kyc/kyc.model')(sequelize),
 };
 
@@ -121,9 +121,10 @@ db.Users.hasMany(db.Message, {
 // });
 
 db.Group.belongsTo(db.Conversation, {
-    foreignKey: 'conversationId', // Foreign key in Group table linking to Conversation table
+    foreignKey: 'id',
+    targetKey: 'groupId',
     as: 'conversation',
-  });
+});
 
 
 

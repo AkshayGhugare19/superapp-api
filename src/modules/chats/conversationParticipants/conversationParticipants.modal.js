@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const { participantRole } = require('../../../config/enums');
 
 module.exports = (sequelize) => {
-  const ConversationParticipants = sequelize.define('ConversationParticipant', {
+  const ConversationParticipants = sequelize.define('ConversationParticipants', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -47,6 +47,9 @@ module.exports = (sequelize) => {
   }, {
     timestamps: true,  // Automatically add createdAt and updatedAt fields
     paranoid: true,    // Soft delete support (deletedAt field)
+    tableName: 'ConversationParticipants',  // Explicitly set the table name
+    modelName: 'ConversationParticipants',  // Explicitly set the model name
+    freezeTableName: true,  // Prevent Sequelize from pluralizing the table name
   });
 
   // Define associations

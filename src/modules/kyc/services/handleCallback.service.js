@@ -10,12 +10,12 @@ const api_key = process.env.SMILE_API_KEY;
 const sid_server = process.env.SMILE_ENVIRONMENT || '0';
 
 // Debug logging
-console.log('Smile ID Configuration:', {
-  partner_id: partner_id ? 'Set' : 'Not Set',
-  default_callback: default_callback ? 'Set' : 'Not Set',
-  api_key: api_key ? 'Set' : 'Not Set',
-  sid_server
-});
+// console.log('Smile ID Configuration:', {
+//   partner_id: partner_id ? 'Set' : 'Not Set',
+//   default_callback: default_callback ? 'Set' : 'Not Set',
+//   api_key: api_key ? 'Set' : 'Not Set',
+//   sid_server
+// });
 
 if (!partner_id || !default_callback || !api_key) {
   console.error('Missing required Smile ID environment variables');

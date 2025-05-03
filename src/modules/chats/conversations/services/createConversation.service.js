@@ -101,7 +101,7 @@ async function createConversation({ participantIds, initiatorId, groupName, tran
       joinedAt: new Date(),
     }));
 
-    await db.ConversationParticipant.bulkCreate(participantsData, { transaction: t });
+    await db.ConversationParticipants.bulkCreate(participantsData, { transaction: t });
 
     if (useLocalTransaction) await t.commit();
 
