@@ -18,8 +18,12 @@ const deleteGroup = async (id) => {
 
     // Delete the group
 	console.log("group123",group)
-	return  { status: false, code: 500, msg: group };;
-    await db.Group.destroy({ where: { id }, transaction: t });
+
+  await db.Group.update(
+    { isActive: false },
+    { where: { id }, transaction: t }
+  );
+  await db.Group.destroy({ where: { id }, transaction: t });
 
     // TODO: Optionally delete related records like conversation, messages, etc.
 
