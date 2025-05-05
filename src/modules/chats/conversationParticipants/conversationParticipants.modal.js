@@ -44,6 +44,11 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
+    removalType: {
+      type: DataTypes.ENUM('self_removal', 'admin_removal'),
+      allowNull: true,
+      comment: 'Indicates how the participant was removed from the conversation'
+    }
   }, {
     timestamps: true,  // Automatically add createdAt and updatedAt fields
     paranoid: true,    // Soft delete support (deletedAt field)
