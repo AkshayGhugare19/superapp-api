@@ -11,6 +11,7 @@ router.route('/create').post(auth([roles.consumer, roles.merchant,roles.agent]),
 router.route('/delete/:id').delete(auth([roles.consumer, roles.merchant,roles.agent]),  groupControllers.deleteGroup);
 router.route('/:id/members').post(auth([roles.consumer, roles.merchant,roles.agent]), validate(groupValidations.addMembersSchema), groupControllers.addGroupMembers);
 router.route('/:id/members/:memberId').delete(auth([roles.consumer, roles.merchant,roles.agent]), groupControllers.removeMember);
+router.route('/update').put(auth([roles.consumer, roles.merchant,roles.agent]), groupControllers.updateGroup);
 
 
 
